@@ -1,0 +1,36 @@
+.contenedor {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.input-busqueda {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.lista-medicamentos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.tarjeta {
+  background-color: #f2f2f2;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.tarjeta:hover {
+  transform: scale(1.02);
+}
+
+.sin-resultados {
+  color: red;
+  text-align: center;
+}

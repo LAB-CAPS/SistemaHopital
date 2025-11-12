@@ -1,0 +1,73 @@
+/* Asegura que la página ocupe toda la pantalla */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif; /* Fuente más limpia */
+  }
+  
+  /* Contenedor para la imagen de fondo */
+  .background-container {
+    position: relative;
+    height: 100vh; /* 100% de la altura de la ventana */
+    width: 100%;
+    overflow: hidden; /* Oculta cualquier contenido fuera del contenedor */
+  }
+  
+  /* Imagen de fondo */
+  .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra toda la pantalla sin perder proporción */
+    z-index: -1; /* Mantiene la imagen en el fondo */
+  }
+  
+  /* Contenedor del botón */
+  .button-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el botón */
+    z-index: 1;
+    text-align: center;
+  }
+  
+  /* Estilo del botón */
+  .btn {
+    padding: 15px 30px;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro pero translúcido */
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra suave */
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo más oscuro al pasar el mouse */
+  }
+
+
+  /* Contenedor para el iframe que ocupe toda la pantalla */
+.iframe-container {
+    position: fixed; /* Asegura que el iframe quede fijo en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* 100% de la altura de la ventana */
+    overflow: hidden; /* Asegura que no haya barras de desplazamiento */
+  }
+  
+  /* El iframe ocupa todo el espacio dentro del contenedor */
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  

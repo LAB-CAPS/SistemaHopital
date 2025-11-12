@@ -1,0 +1,247 @@
+<div class="max-w-7xl mx-auto p-8 bg-gray-50 min-h-screen">
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center mb-8 border-b pb-4">
+    <div>
+      <h1 class="text-4xl font-bold text-blue-900">👤 Bienvenido, {{ doctorNombre }}</h1>
+      <p class="text-gray-600 mt-1">Panel del Paciente</p>
+    </div>
+    <button
+      (click)="cerrarSesion()"
+      class="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700 transition"
+    >
+      Cerrar Sesión
+    </button>
+  </div>
+
+  <!-- Navegación -->
+  <nav class="flex flex-wrap gap-4 mb-6">
+    <button (click)="mostrarSeccion('inicio')" [ngClass]="{'bg-blue-600 text-white': seccionActiva === 'inicio'}"
+      class="px-5 py-2 rounded border border-blue-600 hover:bg-blue-100 text-blue-600 font-medium transition">
+      Inicio
+    </button>
+    <button (click)="mostrarSeccion('citas')" [ngClass]="{'bg-blue-600 text-white': seccionActiva === 'citas'}"
+      class="px-5 py-2 rounded border border-blue-600 hover:bg-blue-100 text-blue-600 font-medium transition">
+      Citas Médicas
+    </button>
+    <button (click)="mostrarSeccion('historialMedico')" [ngClass]="{'bg-blue-600 text-white': seccionActiva === 'historialMedico'}"
+      class="px-5 py-2 rounded border border-blue-600 hover:bg-blue-100 text-blue-600 font-medium transition">
+      Historial Médico
+    </button>
+    <button (click)="mostrarSeccion('recetas')" [ngClass]="{'bg-blue-600 text-white': seccionActiva === 'recetas'}"
+      class="px-5 py-2 rounded border border-blue-600 hover:bg-blue-100 text-blue-600 font-medium transition">
+      Recetas Médicas
+    </button>
+  </nav>
+
+  <!-- Inicio -->
+<div *ngIf="seccionActiva === 'inicio'" class="bg-white p-8 rounded-lg shadow">
+  <h2 class="text-2xl font-semibold text-blue-800 mb-4">📋 Panel General</h2>
+  <p class="text-gray-700 leading-relaxed">
+    Desde este panel puedes realizar diversas gestiones médicas como reservar citas, consultar tu historial clínico y acceder a información relacionada con tu salud.
+  </p>
+</div>
+<!-- Carrusel de imágenes con tamaño ajustado -->
+<div *ngIf="seccionActiva === 'inicio'" class="relative bg-white p-6 rounded-lg shadow mb-6">
+  <h3 class="text-xl font-bold text-blue-800 mb-4">📢 Anuncios Destacados</h3>
+
+  <div class="flex items-center space-x-2">
+    <!-- Flecha izquierda -->
+    <button (click)="anteriorAnuncio()" class="p-2 bg-blue-200 rounded-full hover:bg-blue-300 text-xl">
+      ◀
+    </button>
+
+    <!-- Contenedor del carrusel -->
+    <div class="overflow-hidden w-full rounded-lg h-52 flex items-center justify-center">
+      <div class="flex transition-transform duration-500 ease-in-out"
+           [ngStyle]="{ transform: 'translateX(-' + (indiceCarrusel * 100) + '%)' }"
+           style="width: 400%;">
+
+        <div *ngFor="let imagen of imagenesCarrusel" class="w-full flex-shrink-0 flex justify-center items-center px-2">
+          <img [src]="imagen" alt="Anuncio"
+               class="max-h-48 object-contain rounded-lg shadow w-auto mx-auto" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Flecha derecha -->
+    <button (click)="siguienteAnuncio()" class="p-2 bg-blue-200 rounded-full hover:bg-blue-300 text-xl">
+      ▶
+    </button>
+  </div>
+</div>
+
+
+  <!-- Citas -->
+  <div *ngIf="seccionActiva === 'citas'" class="bg-white p-8 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold text-blue-800 mb-6">🗓️ Reservar una nueva cita</h2>
+
+    <form (ngSubmit)="reservarCita()" class="grid md:grid-cols-3 gap-6" #form="ngForm">
+      <!-- Médico -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Médico:</label>
+        <select
+          [(ngModel)]="nuevaCita.idMedico"
+          (change)="actualizarCitasMedicoPorFecha()"
+          name="medico"
+          required
+          class="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <option [ngValue]="null" disabled>Seleccione un médico</option>
+          <option *ngFor="let medico of medicos" [ngValue]="medico.id">
+            {{ medico.nombres }} {{ medico.apellidos }} - {{ medico.especialidad }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Fecha -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha:</label>
+        <input
+          type="date"
+          [(ngModel)]="nuevaCita.fecha"
+          (change)="actualizarCitasMedicoPorFecha()"
+          [min]="fechaMinima"
+          name="fecha"
+          required
+          class="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <div *ngIf="nuevaCita.fecha && nuevaCita.idMedico && citasActualesMedico !== null" class="text-sm mt-1">
+          <span
+            [ngClass]="{
+              'text-green-600': citasActualesMedico < limiteCitasPorDia,
+              'text-red-600 font-semibold': citasActualesMedico >= limiteCitasPorDia
+            }"
+          >
+            Cupos disponibles: {{ limiteCitasPorDia - citasActualesMedico }}
+            <span *ngIf="citasActualesMedico >= limiteCitasPorDia">❌ Sin cupos disponibles</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Hora -->
+<!-- Hora -->
+<div>
+  <label class="block text-sm font-medium text-gray-700 mb-1">Hora:</label>
+  <select
+    [(ngModel)]="nuevaCita.hora"
+    name="hora"
+    required
+    [disabled]="horariosDisponibles.length === 0"
+    class="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+  >
+    <option value="" disabled selected>Seleccione una hora</option>
+    <ng-container *ngFor="let hora of horariosDisponibles">
+      <option *ngIf="hora.disponible" [value]="hora.hora">{{ hora.hora }}</option>
+    </ng-container>
+  </select>
+  <div *ngIf="horariosDisponibles.length === 0 && nuevaCita.fecha && nuevaCita.idMedico" class="text-red-600 text-sm mt-1">
+    No hay horarios disponibles para esta fecha.
+  </div>
+</div>
+
+
+      <!-- Botón -->
+      <div class="md:col-span-3 text-right mt-4">
+        <button
+          type="submit"
+          [disabled]="citasActualesMedico >= limiteCitasPorDia || horariosDisponibles.length === 0"
+          class="bg-blue-600 text-white px-6 py-2 rounded-md transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Reservar Cita
+        </button>
+      </div>
+    </form>
+
+    <!-- Lista de citas -->
+    <h3 class="text-xl font-semibold text-blue-800 mt-10 mb-6">📋 Mis Citas</h3>
+    <div *ngIf="citasPaciente.length === 0" class="text-gray-600">No tienes citas registradas.</div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let cita of citasPaciente" class="bg-white border border-blue-100 shadow-md rounded-xl p-5 hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="text-lg font-bold text-blue-700">🩺 {{ cita.especialidad }}</h4>
+          <span class="text-sm px-3 py-1 rounded-full font-semibold"
+            [ngClass]="{
+              'bg-green-100 text-green-700': cita.estado === 'ATENDIDA',
+              'bg-yellow-100 text-yellow-700': cita.estado === 'PENDIENTE',
+              'bg-red-100 text-red-700': cita.estado === 'CANCELADA'
+            }">
+            {{ cita.estado }}
+          </span>
+        </div>
+        <p class="text-sm text-gray-600 mb-1"><strong>📅 Fecha:</strong> {{ cita.fecha }}</p>
+        <p class="text-sm text-gray-600 mb-1"><strong>⏰ Hora:</strong> {{ cita.hora }}</p>
+        <p class="text-sm text-gray-600"><strong>👨‍⚕️ Médico:</strong> {{ cita.nombreMedico || 'N/D' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historial Médico -->
+  <div *ngIf="seccionActiva === 'historialMedico'" class="bg-white p-8 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold text-blue-800 mb-6">📚 Historial Médico</h2>
+    <div *ngIf="historialMedico.length === 0" class="text-gray-600">
+      No se encontraron registros en tu historial.
+    </div>
+    <div *ngFor="let registro of historialMedico" class="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-4">
+      <p><strong>📅 Fecha:</strong> {{ registro.fecha }}</p>
+      <p><strong>🩺 Diagnóstico:</strong> {{ registro.diagnostico }}</p>
+      <p><strong>📝 Notas:</strong> {{ registro.notas }}</p>
+      <p><strong>👨‍⚕️ Médico:</strong> {{ registro.nombreMedico }}</p>
+      <p><strong>💊 Medicamentos:</strong> {{ registro.medicamentos }}</p>
+    </div>
+  </div>
+
+  <!-- Recetas Médicas -->
+  <!-- Recetas Médicas -->
+<div *ngIf="seccionActiva === 'recetas'" class="bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold text-blue-800 mb-4">💊 Recetas Médicas</h2>
+
+  <div *ngIf="recetasPaciente.length === 0" class="text-gray-600 italic">
+    No tienes recetas médicas disponibles.
+  </div>
+
+  <div *ngFor="let receta of recetasPaciente" class="mb-6 border rounded-lg shadow-sm p-4 bg-gray-50">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+      <div>
+        <p><strong>👤 Paciente:</strong> {{ receta.nombrePaciente }}</p>
+        <p><strong>👨‍⚕️ Médico:</strong> {{ receta.nombreMedico }}</p>
+        <p><strong>📅 Fecha de cita:</strong> {{ receta.fechaCita }}</p>
+        <p>
+          <strong>📌 Estado:</strong>
+          <span class="px-2 py-1 text-xs rounded bg-blue-100 text-blue-800 font-medium">
+            {{ receta.estado }}
+          </span>
+        </p>
+      </div>
+<!-- Aviso si se ocultaron recetas despachadas -->
+<div *ngIf="mostrarMensajeDespacho" class="mb-4 p-3 bg-yellow-100 text-yellow-800 border-l-4 border-yellow-500 rounded">
+  Las recetas médicas que ya han sido despachadas han sido eliminadas de la.
+</div>
+      <button
+        (click)="descargarRecetaPDF(receta)"
+        class="mt-4 md:mt-0 px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition">
+        📥 Descargar PDF
+      </button>
+    </div>
+
+    <!-- Tabla de medicamentos -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto text-sm border border-gray-200 bg-white rounded">
+        <thead>
+          <tr class="bg-blue-100 text-blue-900">
+            <th class="px-4 py-2 border">💊 Medicamento</th>
+            <th class="px-4 py-2 border">📦 Presentación</th>
+            <th class="px-4 py-2 border">🔢 Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let med of receta.medicamentos" class="hover:bg-gray-100">
+            <td class="px-4 py-2 border">{{ med.nombre }}</td>
+            <td class="px-4 py-2 border">{{ med.presentacion }}</td>
+            <td class="px-4 py-2 border">{{ med.cantidad }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

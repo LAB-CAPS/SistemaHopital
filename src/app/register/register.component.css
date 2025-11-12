@@ -1,0 +1,129 @@
+/* Fondo de la página con gradiente animado */
+html, body {
+  background-color: #ffffff; /* Color de fondo inicial */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  width: 100%;
+}
+
+/* Gradiente animado de fondo */
+@keyframes backgroundAnimation {
+  0% {
+    background: linear-gradient(45deg, #ff6a00, #ee0979); /* Color inicial */
+  }
+  25% {
+    background: linear-gradient(45deg, #00c6ff, #0072ff); /* Primer cambio de color */
+  }
+  50% {
+    background: linear-gradient(45deg, #00b09b, #96c93d); /* Segundo cambio de color */
+  }
+  75% {
+    background: linear-gradient(45deg, #ff512f, #dd2476); /* Tercer cambio de color */
+  }
+  100% {
+    background: linear-gradient(45deg, #ff6a00, #ee0979); /* Vuelve al color inicial */
+  }
+}
+
+/* Aplicamos la animación al fondo del contenedor */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  animation: backgroundAnimation 5s infinite; /* Animación de fondo de 10 segundos, repetida infinitamente */
+}
+
+/* Estilos del formulario */
+.form {
+  max-width: 320px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo translúcido para el formulario */
+  padding: 40px;
+  box-shadow: 0px 0px 0px 4px rgba(52, 52, 53, 0.185);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+/* Estilos del título */
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #1a202c;
+}
+
+.label {
+  color: rgb(0, 0, 0);
+  margin-bottom: 4px;
+}
+
+/* Estilos de los campos de entrada */
+.input {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  font-size: 1rem;
+  color: #4a5568;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #cbd5e0;
+}
+
+.input:valid {
+  border: 1px solid green;
+}
+
+.input:invalid {
+  border: 1px solid rgba(14, 14, 14, 0.205);
+}
+
+/* Estilos del botón de submit */
+.submit {
+  background-color: #1a202c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.submit:hover {
+  background-color: #4a5568;
+}
+
+/* Estilos para los enlaces de "olvidaste tu contraseña" y "registrarse" */
+.span {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.forgot,
+.signup {
+  color: #1a202c;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot:hover,
+.signup:hover {
+  text-decoration: underline;
+}
+
+
+
+

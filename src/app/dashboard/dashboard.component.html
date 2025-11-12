@@ -1,0 +1,158 @@
+<div class="p-6 space-y-10">
+
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center mb-4">
+    <div class="flex items-center gap-4">
+      <button type="button" (click)="cancelarAtencion()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition">
+        Retroceder
+      </button>
+      <h2 class="text-3xl font-bold text-blue-800">Bienvenido, {{ doctorNombre }}</h2>
+    </div>
+    <div>
+      <button type="button" (click)="cerrarSesion()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+        Cerrar Sesión
+      </button>
+    </div>
+  </div>
+
+  <!-- Lista de citas -->
+  <div *ngIf="!citaSeleccionada && !modoHistorialGlobal" class="space-y-6">
+    <div class="flex justify-between items-center">
+      <h3 class="text-xl font-semibold text-gray-800">Citas Pendientes</h3>
+      <button (click)="cargarHistorialGlobal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition">
+        Ver Historial Médico Global
+      </button>
+    </div>
+
+    <div class="overflow-x-auto rounded-xl shadow border border-gray-200">
+      <table class="min-w-full text-sm text-left text-gray-800">
+        <thead class="bg-blue-600 text-white">
+          <tr>
+            <th class="py-3 px-4">Paciente</th>
+            <th class="py-3 px-4">Fecha</th>
+            <th class="py-3 px-4">Hora</th>
+            <th class="py-3 px-4">Especialidad</th>
+            <th class="py-3 px-4">Estado</th>
+            <th class="py-3 px-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cita of citasAsignadas" class="border-b hover:bg-gray-50">
+            <td class="py-2 px-4">{{ cita.nombrePaciente }}</td>
+            <td class="py-2 px-4">{{ cita.fecha }}</td>
+            <td class="py-2 px-4">{{ cita.hora }}</td>
+            <td class="py-2 px-4">{{ cita.especialidad }}</td>
+            <td class="py-2 px-4">
+              <span class="inline-block px-2 py-1 rounded-full text-xs font-semibold"
+                [ngClass]="{
+                  'bg-yellow-100 text-yellow-800': cita.estado === 'PENDIENTE',
+                  'bg-green-100 text-green-800': cita.estado === 'ATENDIDA',
+                  'bg-gray-200 text-gray-700': cita.estado !== 'PENDIENTE' && cita.estado !== 'ATENDIDA'
+                }">
+                {{ cita.estado }}
+              </span>
+            </td>
+            <td class="py-2 px-4">
+              <button (click)="atenderCita(cita)" [disabled]="cita.estado === 'ATENDIDA'"
+                [ngClass]="{
+                  'bg-blue-600 hover:bg-blue-700 text-white': cita.estado !== 'ATENDIDA',
+                  'bg-gray-300 text-gray-500 cursor-not-allowed': cita.estado === 'ATENDIDA'
+                }"
+                class="text-sm px-4 py-1.5 rounded-lg transition" title="Atender">
+                Atender
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Formulario de atención médica -->
+  <div *ngIf="citaSeleccionada" class="bg-white p-6 rounded-xl shadow-xl border border-blue-300 space-y-6">
+    <h3 class="text-2xl font-semibold text-blue-800">Atendiendo a: {{ citaSeleccionada.nombrePaciente }}</h3>
+
+    <form (ngSubmit)="registrarAtencion()" #form="ngForm" class="space-y-6">
+
+      <!-- Diagnóstico -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Diagnóstico:</label>
+        <textarea [(ngModel)]="diagnostico" name="diagnostico" required
+          class="w-full border border-gray-300 rounded-md p-3 focus:outline-blue-400 resize-none" rows="3"></textarea>
+      </div>
+
+      <!-- Notas -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Notas:</label>
+        <textarea [(ngModel)]="notas" name="notas"
+          class="w-full border border-gray-300 rounded-md p-3 focus:outline-blue-400 resize-none" rows="3"></textarea>
+      </div>
+
+      <!-- Búsqueda y selección de medicamentos -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-2">Buscar medicamento:</label>
+        <input type="text" [(ngModel)]="filtroMedicamento" name="filtroMedicamento"
+          placeholder="Escribe el nombre del medicamento..."
+          class="w-full border border-gray-300 rounded-md p-2 mb-3 focus:outline-blue-400" />
+
+        <label class="block text-gray-700 font-medium mb-2">Seleccionar medicamentos:</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-80 overflow-y-auto">
+          <div *ngFor="let med of medicamentosDisponiblesFiltrados"
+            class="flex justify-between items-center border border-gray-300 rounded-md p-2 bg-white shadow-sm">
+            <label class="flex items-center gap-2 text-sm text-gray-800">
+              <input type="checkbox" [checked]="medicamentoEstaSeleccionado(med)" (change)="toggleMedicamentoSeleccionado(med)"
+                id="med{{ med.id }}" class="accent-blue-600" />
+              {{ med.nombreComercial }} ({{ med.presentacion }} - {{ med.viaAdministrativa }})
+            </label>
+            <input type="number" min="1" [(ngModel)]="medicamentosConCantidad[med.id]"
+              [disabled]="!medicamentoEstaSeleccionado(med)" class="w-20 text-center border border-gray-300 rounded p-1 text-sm"
+              placeholder="Cant." name="cantidad{{ med.id }}" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end space-x-4 pt-4">
+        <button type="button" (click)="cancelarAtencion()"
+          class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition">
+          Cancelar
+        </button>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+          Registrar Atención
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Historial Médico Global (MOVER AQUÍ FUERA DEL FORMULARIO) -->
+  <div *ngIf="modoHistorialGlobal && historialGlobal" class="bg-white p-6 rounded-lg shadow-xl border border-blue-300 space-y-6">
+    <div class="flex justify-between items-center">
+      <h3 class="text-2xl font-semibold text-blue-800">📚 Historial Médico Global</h3>
+      <div class="flex items-center gap-4">
+        <input type="text" [(ngModel)]="dniFiltro" name="filtroDni" placeholder="Buscar por DNI..."
+          class="border border-gray-300 p-2 rounded-md" />
+        <button (click)="buscarHistorialPorDni()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+          Buscar
+        </button>
+        <button (click)="modoHistorialGlobal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+          Cerrar
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="historialGlobal.length === 0" class="text-gray-600">
+      <p>No se encontraron registros en el historial médico.</p>
+    </div>
+
+    <div *ngFor="let registro of historialGlobal" class="bg-gray-50 border border-gray-300 rounded-lg p-4">
+      <p><strong>📅 Fecha:</strong> {{ registro.fecha }}</p>
+      <p><strong>🩺 Diagnóstico:</strong> {{ registro.diagnostico }}</p>
+      <p><strong>📝 Notas:</strong> {{ registro.notas }}</p>
+      <p><strong>👨‍⚕️ Médico:</strong> {{ registro.nombreMedico }}</p>
+      <p><strong>🧍 Paciente:</strong> {{ registro.nombrePaciente }}</p>
+      <p><strong>💊 Medicamentos:</strong> {{ registro.medicamentos }}</p>
+    </div>
+  </div>
+
+</div>

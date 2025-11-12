@@ -1,0 +1,54 @@
+<!-- Fondo con imagen -->
+<div class="min-h-screen flex items-center justify-center bg-cover bg-center relative p-4"
+     style="background-image: url('https://res.cloudinary.com/dfinqvmue/image/upload/v1747249926/FB-1.jpg-pica_uxugde.png');">
+
+  <!-- Capa oscura para contraste (opcional) -->
+  <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+
+  <!-- Contenedor del login (funcionalidad intacta) -->
+  <div class="relative z-10 bg-white bg-opacity-95 shadow-xl rounded-2xl p-8 w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Iniciar Sesión</h2>
+
+    <form (ngSubmit)="onLogin()" class="space-y-5">
+      <div>
+        <label for="dni" class="block text-sm font-medium text-gray-700">DNI</label>
+        <input
+          id="dni"
+          name="dni"
+          [(ngModel)]="dni"
+          required
+          type="text"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          placeholder="Ingrese su DNI"
+        />
+      </div>
+
+      <div>
+        <label for="contrasena" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <input
+          id="contrasena"
+          name="contrasena"
+          type="password"
+          [(ngModel)]="contrasena"
+          required
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          placeholder="Ingrese su contraseña"
+        />
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+        >
+          Iniciar Sesión
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-6 text-center text-sm text-gray-600">
+      ¿No tienes cuenta?
+      <a routerLink="/register" class="text-blue-600 hover:underline font-semibold">Regístrate aquí</a>
+    </div>
+  </div>
+</div>

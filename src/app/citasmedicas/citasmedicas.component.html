@@ -1,0 +1,57 @@
+<div class="citas-container">
+  <h2>Gestión de Citas Médicas</h2>
+
+  <div class="formulario-cita">
+    <h3>Reservar una nueva cita</h3>
+    <form>
+      <label for="paciente">Paciente:</label>
+      <input type="text" id="paciente" placeholder="Nombre del paciente" />
+
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" />
+
+      <label for="hora">Hora:</label>
+      <input type="time" id="hora" />
+
+      <label for="especialidad">Especialidad:</label>
+      <select id="especialidad">
+        <option value="medicina_general">Medicina General</option>
+        <option value="pediatria">Pediatría</option>
+        <option value="dermatologia">Dermatología</option>
+      </select>
+
+      <button type="button">Guardar cita</button>
+    </form>
+  </div>
+
+  <div class="lista-citas">
+    <h3>Citas Programadas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Especialidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Juan Pérez</td>
+          <td>2025-06-15</td>
+          <td>09:00</td>
+          <td>Medicina General</td>
+          <td><button>Cancelar</button></td>
+        </tr>
+        <tr>
+          <td>Maria Gómez</td>
+          <td>2025-06-16</td>
+          <td>11:30</td>
+          <td>Pediatría</td>
+          <td><button>Cancelar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

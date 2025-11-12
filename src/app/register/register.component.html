@@ -1,0 +1,44 @@
+<!-- Fondo con imagen para el registro de paciente -->
+<div class="min-h-screen flex items-center justify-center bg-cover bg-center relative p-4"
+     style="background-image: url('https://res.cloudinary.com/dfinqvmue/image/upload/v1747249926/FB-1.jpg-pica_uxugde.png');">
+
+  <!-- Capa oscura opcional para mejorar contraste -->
+  <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+
+  <!-- Contenedor del formulario -->
+  <div class="relative z-10 bg-white bg-opacity-95 shadow-lg rounded-xl p-10 w-full max-w-2xl">
+    <h2 class="text-3xl font-bold mb-8 text-center text-blue-700">Registro de Paciente</h2>
+
+    <form (ngSubmit)="onRegister()" class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
+      <input type="text" placeholder="DNI" [(ngModel)]="datosPaciente.dni" name="dni" required
+        class="input border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+      <input type="password" placeholder="Contraseña" [(ngModel)]="datosPaciente.contrasena" name="contrasena" required
+        class="input border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+      <input type="text" placeholder="Nombres" [(ngModel)]="datosPaciente.nombres" name="nombres" required
+        class="input border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+      <input type="text" placeholder="Apellidos" [(ngModel)]="datosPaciente.apellidos" name="apellidos" required
+        class="input border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+      <input type="email" placeholder="Correo" [(ngModel)]="datosPaciente.correo" name="correo" required
+        class="input border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+      <input type="text" placeholder="Teléfono" [(ngModel)]="datosPaciente.telefono" name="telefono" required
+        class="input border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400" />
+
+      <select [(ngModel)]="datosPaciente.seguro" name="seguro" required
+        class="input col-span-full border border-gray-300 p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <option value="" disabled selected>Seleccione tipo de seguro</option>
+        <option value="SIS">SIS</option>
+        <option value="ESSALUD">ESSALUD</option>
+      </select>
+
+      <button type="submit"
+        class="col-span-full mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition-all duration-200">
+        Registrarse
+      </button>
+    </form>
+  </div>
+</div>
