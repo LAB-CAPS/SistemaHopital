@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cita } from './cita.model';
 import { CitaResponseDTO } from './cita-response.dto';
-
+import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class CitaService {
-  private apiUrl = 'http://localhost:8080/api/citas';
+  private apiUrl = `${environment.apiUrl}/api/citas`; // usa environment para cambiar URL dinámicamente
 
   constructor(private http: HttpClient) {}
 
@@ -43,11 +43,10 @@ export class CitaService {
   }
 
   obtenerCantidadCitasPorMedicoYFecha(idMedico: number, fecha: string): Observable<number> {
-  return this.http.get<number>(`http://localhost:8080/api/citas/medico/${idMedico}/fecha/${fecha}/cantidad`);
-}
+    return this.http.get<number>(`${this.apiUrl}/medico/${idMedico}/fecha/${fecha}/cantidad`);
+  }
 
-obtenerCitasPorMedicoYFecha(idMedico: number, fecha: string): Observable<CitaResponseDTO[]> {
-  return this.http.get<CitaResponseDTO[]>(`${this.apiUrl}/medico/${idMedico}/fecha/${fecha}`);
-}
-
+  obtenerCitasPorMedicoYFecha(idMedico: number, fecha: string): Observable<CitaResponseDTO[]> {
+    return this.http.get<CitaResponseDTO[]>(`${this.apiUrl}/medico/${idMedico}/fecha/${fecha}`);
+  }
 }

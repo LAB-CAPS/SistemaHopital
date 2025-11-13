@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegistroHistoriaDTO } from './registro-historia.dto';
+import { environment } from '../environments/environment'; // ruta usando environment
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoriaService {
 
-  private apiUrl = 'http://localhost:8080/api/historia-clinica'; // Ruta base correcta
+  private apiUrl = `${environment.apiUrl}/api/historia-clinica`; // usa environment para producción
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +29,6 @@ export class HistoriaService {
     return this.http.put(`${this.apiUrl}/actualizar/${historia.id}`, historia);
   }
 
-  //  Versión corregida: método unificado y correcto
   obtenerTodoElHistorial(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/todos`);
   }

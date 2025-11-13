@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment'; // usando environment
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultaService {
-  private apiUrl = 'http://tu-api.com/api/consultas'; // Cambia la URL por la de tu backend
+  private apiUrl = `${environment.apiUrl}/api/consultas`; // usa environment para backend dinámico
 
   constructor(private http: HttpClient) {}
 

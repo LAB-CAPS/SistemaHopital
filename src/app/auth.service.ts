@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
+import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/usuarios';
+  private apiUrl = `${environment.apiUrl}/api/usuarios`; // usa environment para cambiar URL dinámicamente
 
   constructor(private http: HttpClient) {}
 
@@ -25,15 +25,14 @@ export class AuthService {
           localStorage.setItem('nombreUsuario', response.nombreUsuario);
           localStorage.setItem('dni', response.dni);
 
-  const rol = response.rol?.toLowerCase();
+          const rol = response.rol?.toLowerCase();
 
-if (rol === 'medico' && response.idMedico) {
-  localStorage.setItem('medicoId', response.idMedico.toString());
-}
-if (rol === 'paciente' && response.idPaciente) {
-  localStorage.setItem('pacienteId', response.idPaciente.toString());
-}
-
+          if (rol === 'medico' && response.idMedico) {
+            localStorage.setItem('medicoId', response.idMedico.toString());
+          }
+          if (rol === 'paciente' && response.idPaciente) {
+            localStorage.setItem('pacienteId', response.idPaciente.toString());
+          }
         }
       })
     );
@@ -54,7 +53,6 @@ if (rol === 'paciente' && response.idPaciente) {
     localStorage.removeItem('pacienteId');
     localStorage.removeItem('medicoId');
     localStorage.removeItem('nombreUsuario');
-    
   }
 
   getUsuarioId(): number {
@@ -95,8 +93,6 @@ if (rol === 'paciente' && response.idPaciente) {
   }
 
   getIdMedicoPorUsuario(idUsuario: number): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/api/citas/medico/usuario/${idUsuario}`);
+    return this.http.get<number>(`${environment.apiUrl}/api/citas/medico/usuario/${idUsuario}`);
   }
-
-  
 }

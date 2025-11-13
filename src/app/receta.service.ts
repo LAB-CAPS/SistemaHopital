@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment'; // importa environment
 
 // Receta simple (una por medicamento)
 export interface Receta {
@@ -18,7 +19,7 @@ export interface Receta {
 export interface RecetaAgrupada {
   nombrePaciente: string;
   nombreMedico: string;
-  especialidad: string; //  Agregado
+  especialidad: string; // agregado
   fechaCita: string;
   estado: string;
   medicamentos: {
@@ -28,16 +29,16 @@ export interface RecetaAgrupada {
   }[];
 }
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class RecetaService {
-  private apiUrl = 'http://localhost:8080/api/farmacia';
+  private apiUrl = `${environment.apiUrl}/api/farmacia`; // usa environment para backend dinámico
+  private citasApiUrl = `${environment.apiUrl}/api/citas`; // para consultas de citas
 
   constructor(private http: HttpClient) {}
 
-  //  Para estructura anterior (una receta por fila)
+  // Para estructura anterior (una receta por fila)
   obtenerRecetasPorPaciente(idPaciente: number): Observable<Receta[]> {
     return this.http.get<Receta[]>(`${this.apiUrl}/recetas/paciente/${idPaciente}`);
   }
@@ -48,6 +49,6 @@ export class RecetaService {
   }
 
   obtenerCitasPorMedicoYFecha(idMedico: number, fecha: string): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:8080/api/citas/medico/${idMedico}/fecha/${fecha}`);
+    return this.http.get<any[]>(`${this.citasApiUrl}/medico/${idMedico}/fecha/${fecha}`);
   }
 }

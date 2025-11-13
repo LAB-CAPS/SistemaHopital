@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment'; // importa environment
 
 @Injectable({
   providedIn: 'root'
 })
 export class PacienteService {
-  private apiUrl = 'http://localhost:8080/api/pacientes'; // Cambia la URL por la de tu backend
+  private apiUrl = `${environment.apiUrl}/api/pacientes`; // usa environment para backend dinámico
 
   constructor(private http: HttpClient) {}
 
