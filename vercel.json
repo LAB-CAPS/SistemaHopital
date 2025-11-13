@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "public": "dist/t3-frontend",
   "builds": [
     { "src": "dist/t3-frontend/**", "use": "@vercel/static" }
   ],

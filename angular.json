@@ -23,7 +23,8 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "baseHref": "./"
           },
           "configurations": {
             "production": {
@@ -37,6 +38,12 @@
                   "type": "initial",
                   "maximumWarning": "500kb",
                   "maximumError": "1mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ]
             },
